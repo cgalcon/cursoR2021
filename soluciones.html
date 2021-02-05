@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Soluciones bloque II</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Carlos González Alcón" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rutgers-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/custom_css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Soluciones bloque II
+### Carlos González Alcón
+### 5 de febrero de 2021
+
+---
+
+
+# vectores: ejercicio 1.1 
+&lt;a name=”#primero”&gt;&lt;/a&gt;
+`1.` Crea el vector **z** con los 100 primeros múltiplos de 7.
+
+```r
+&gt; z &lt;- 7*(1:100);  z
+```
+
+```
+##   [1]   7  14  21  28  35  42  49  56  63  70  77  84  91  98 105 112 119 126
+##  [19] 133 140 147 154 161 168 175 182 189 196 203 210 217 224 231 238 245 252
+##  [37] 259 266 273 280 287 294 301 308 315 322 329 336 343 350 357 364 371 378
+##  [55] 385 392 399 406 413 420 427 434 441 448 455 462 469 476 483 490 497 504
+##  [73] 511 518 525 532 539 546 553 560 567 574 581 588 595 602 609 616 623 630
+##  [91] 637 644 651 658 665 672 679 686 693 700
+```
+
+```r
+&gt; z &lt;- 7*1:50;  z   # funciona sin paréntesis pues : tiene precedencia sobre *, /, +, -
+```
+
+```
+##  [1]   7  14  21  28  35  42  49  56  63  70  77  84  91  98 105 112 119 126 133
+## [20] 140 147 154 161 168 175 182 189 196 203 210 217 224 231 238 245 252 259 266
+## [39] 273 280 287 294 301 308 315 322 329 336 343 350
+```
+
+```r
+&gt; w &lt;- 7^1:50;  w   # pero no sobre ^
+```
+
+```
+##  [1]  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+## [26] 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+```
+
+---
+# vectores: ejercicio 1.2
+`2.` Los 8 capítulos de un libro comienzan en las páginas 13, 34, 41, 73, 82, 101, 132, 150 y el octavo acaba en la 193. Calcula el porcentaje del libro que supone cada capítulo, y el porcentaje leído cuando se termina cada uno.
+
+```r
+&gt; pag &lt;- c(13, 34, 41, 73, 82, 101, 132, 150, 193+1)
+&gt; longcap &lt;- diff(pag)         #vector con las longitudes de cada capítulo
+&gt; longcap/sum(longcap)*100     #porcentaje que supone cada capítulo
+```
+
+```
+## [1] 11.602210  3.867403 17.679558  4.972376 10.497238 17.127072  9.944751
+## [8] 24.309392
+```
+
+```r
+&gt; cumsum(longcap/sum(longcap)) #proporciones acumuladas
+```
+
+```
+## [1] 0.1160221 0.1546961 0.3314917 0.3812155 0.4861878 0.6574586 0.7569061
+## [8] 1.0000000
+```
+
+```r
+&gt; round(cumsum(longcap/sum(longcap))*100, 2)  #porcentajes acumulados redondeados (2 dec)
+```
+
+```
+## [1]  11.60  15.47  33.15  38.12  48.62  65.75  75.69 100.00
+```
+
+---
+# vectores: ejercicio 1.3
+`3.` Crea un vector de 100 elementos en el que las posiciones impares las ocupen los impares en orden creciente y las pares sean ceros: (1, 0, 3, 0, 5,..., 99, 0).
+
+```r
+&gt; (1:100)*c(1,0)
+```
+
+```
+##   [1]  1  0  3  0  5  0  7  0  9  0 11  0 13  0 15  0 17  0 19  0 21  0 23  0 25
+##  [26]  0 27  0 29  0 31  0 33  0 35  0 37  0 39  0 41  0 43  0 45  0 47  0 49  0
+##  [51] 51  0 53  0 55  0 57  0 59  0 61  0 63  0 65  0 67  0 69  0 71  0 73  0 75
+##  [76]  0 77  0 79  0 81  0 83  0 85  0 87  0 89  0 91  0 93  0 95  0 97  0 99  0
+```
+
+
+
+
+
+
+&lt;a name=”#segundo”&gt;&lt;/a&gt;
+---
+# vectores: ejercicio 2.1
+Con `rnorm(n)` generamos una muestra aleatoria de *n*
+normales N(0,1). Crea un objeto llamado `x` que sea un
+vector de longitud 10, de normales N(0,1).  
+
+```r
+&gt; x &lt;- rnorm(10);  x
+```
+
+```
+##  [1]  0.39684755  1.24533205  0.35767101 -0.99532213 -0.05910524  1.64884271
+##  [7]  0.20191018 -0.52972398 -1.07678368  0.13934795
+```
+`1.` A partir de `x`, crea un vector llamado `x.pos` con las
+componentes que sean positivas. Cuenta las que son mayores de 0.3.  
+
+```r
+&gt; x.pos &lt;- x[x &gt; 0]; x.pos
+```
+
+```
+## [1] 0.3968476 1.2453321 0.3576710 1.6488427 0.2019102 0.1393479
+```
+
+```r
+&gt; sum(x &gt; 0.3)
+```
+
+```
+## [1] 4
+```
+
+---
+# vectores: ejercicio 2.2
+`2.` Crea un vector llamado `y` que a las componentes de `x`
+menores que --0.5 les cambie el signo.
+
+```r
+&gt; y &lt;- x     #hacemos una copia de x en y
+&gt; y[y &lt; -0.5] &lt;- -y[y &lt; -0.5]
+```
+
+---
+# vectores: ejercicio 2.3
+`3.` Crea un vector llamado `signo` que valga 'p' para las
+componentes en las que `x` es positivo y 'n' para
+aquellas en las que `x` es negativo.
+
+```r
+&gt; signo &lt;- x
+&gt; signo[x &lt; 0] &lt;- "n"
+&gt; signo[x &gt; 0] &lt;- "p"
+&gt; signo
+```
+
+```
+##  [1] "p" "p" "p" "n" "n" "p" "p" "n" "n" "p"
+```
+
+```r
+&gt; x
+```
+
+```
+##  [1]  0.39684755  1.24533205  0.35767101 -0.99532213 -0.05910524  1.64884271
+##  [7]  0.20191018 -0.52972398 -1.07678368  0.13934795
+```
+
+
+
+
+
+&lt;a name=”#tercero”&gt;&lt;/a&gt;
+---
+# Matrices: ejercicio 3.1
+
+
+```r
+&gt; nispe &lt;- c(205.6, 212.9, 199.8, 197.4, 196.0, 196.0)
+&gt; aguac &lt;- c(11959.1, 8879.8, 11001.1, 9427.2, 10328.0, 9808.0)
+&gt; kiwis &lt;- c(57.5, 55.3, 52.3, 48.0, 46.0, 45.0)
+&gt; frutas &lt;- rbind(nispe,aguac,kiwis); frutas
+```
+
+```
+##          [,1]   [,2]    [,3]   [,4]  [,5] [,6]
+## nispe   205.6  212.9   199.8  197.4   196  196
+## aguac 11959.1 8879.8 11001.1 9427.2 10328 9808
+## kiwis    57.5   55.3    52.3   48.0    46   45
+```
+Damos/cambiamos nombres a columnas y filas con `colnames()` y `rownames()`
+
+```r
+&gt; colnames(frutas) &lt;- c(2019:2014)
+&gt; rownames(frutas) &lt;- c("nispero", "aguacate", "kiwi")
+&gt; frutas
+```
+
+```
+##             2019   2018    2017   2016  2015 2014
+## nispero    205.6  212.9   199.8  197.4   196  196
+## aguacate 11959.1 8879.8 11001.1 9427.2 10328 9808
+## kiwi        57.5   55.3    52.3   48.0    46   45
+```
+
+---
+# Matrices: ejercicio 3.2
+
+* Si el precio medio del kilo de níspero es 1.5€, el del aguacate es 1.2€ y el del
+kiwi es 1.3€, ¿a cuánto asciende el valor de la producción de cada año?
+
+```r
+&gt; precio &lt;- c(1.5, 1.2, 1.3)
+&gt; precio %*% frutas   # dimensiones 1x3 * 3x6 = 1x6
+```
+
+```
+##          2019  2018     2017     2016    2015    2014
+## [1,] 14734.07 11047 13569.01 11671.14 12747.4 12122.1
+```
+
+```r
+&gt; frutas[,'2019']                # no lo muestra como una columna
+```
+
+```
+##  nispero aguacate     kiwi 
+##    205.6  11959.1     57.5
+```
+
+```r
+&gt; sum(frutas[,'2019'] * precio)*1000  # multiplicación de vectores elemento a elemento
+```
+
+```
+## [1] 14734070
+```
+
+
+---
+# Matrices: ejercicio 3.3
+
+* ¿Qué producciones superan las 200 toneladas? ¿Cuánto suman?
+
+```r
+&gt; frutas &gt; 200              # matriz lógica
+```
+
+```
+##           2019  2018  2017  2016  2015  2014
+## nispero   TRUE  TRUE FALSE FALSE FALSE FALSE
+## aguacate  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## kiwi     FALSE FALSE FALSE FALSE FALSE FALSE
+```
+
+```r
+&gt; frutas[frutas &gt; 200]      # vector con los elementos mayores que 200
+```
+
+```
+## [1]   205.6 11959.1   212.9  8879.8 11001.1  9427.2 10328.0  9808.0
+```
+
+```r
+&gt; sum(frutas[frutas &gt; 200]) 
+```
+
+```
+## [1] 61821.7
+```
+
+---
+# Matrices: ejercicio 3.3 (cont.)
+* ¿Qué frutas y qué años superan las 200 toneladas?
+
+```r
+&gt; frutas * (frutas &gt; 200)   # multiplicación de matrices elemento a elemento
+```
+
+```
+##             2019   2018    2017   2016  2015 2014
+## nispero    205.6  212.9     0.0    0.0     0    0
+## aguacate 11959.1 8879.8 11001.1 9427.2 10328 9808
+## kiwi         0.0    0.0     0.0    0.0     0    0
+```
+
+```r
+&gt; frutas * (frutas &gt; 200) -&gt; m200
+&gt; m200[m200==0] &lt;- NA
+&gt; m200
+```
+
+```
+##             2019   2018    2017   2016  2015 2014
+## nispero    205.6  212.9      NA     NA    NA   NA
+## aguacate 11959.1 8879.8 11001.1 9427.2 10328 9808
+## kiwi          NA     NA      NA     NA    NA   NA
+```
+
+
+
+
+
+
+
+
+
+&lt;a name=”#cuarto”&gt;&lt;/a&gt;
+---
+# data.frame: ejercicio 4
+Leemos los datos de lectura en escolares:
+
+```r
+&gt; lect &lt;- read.table("lectura.csv", header=T, dec=",")
+&gt; lect$curso &lt;- factor(lect$curso, levels=2:7, labels=c(2:6,'1ESO'), ordered=T)
+&gt; lect$dx &lt;- factor(lect$dx, levels=c(0,1), labels=c('sin_dislexia', 'con_dislexia'))
+&gt; head(lect[,1:5])
+```
+
+```
+##   curso edad           dx CF   PH
+## 1     2   87 sin_dislexia 60 40.6
+## 2     2   88 sin_dislexia 52 28.9
+## 3     2   88 sin_dislexia 72 54.6
+## 4     2   90 con_dislexia 71 29.5
+## 5     2   96 con_dislexia 68 47.8
+## 6     2   85 con_dislexia 69 24.1
+```
+
+---
+# data.frame: ejercicio 4.1
+* Vemos la estructura del data.frame `lect`
+
+```r
+&gt; str(lect)
+```
+
+```
+## 'data.frame':	30 obs. of  7 variables:
+##  $ curso: Ord.factor w/ 6 levels "2"&lt;"3"&lt;"4"&lt;"5"&lt;..: 1 1 1 1 1 1 2 2 2 2 ...
+##  $ edad : int  87 88 88 90 96 85 106 101 98 106 ...
+##  $ dx   : Factor w/ 2 levels "sin_dislexia",..: 1 1 1 2 2 2 1 1 1 2 ...
+##  $ CF   : int  60 52 72 71 68 69 75 61 51 51 ...
+##  $ PH   : num  40.6 28.9 54.6 29.5 47.8 24.1 59.7 73.2 59 46.2 ...
+##  $ VN   : num  732 742 745 752 777 ...
+##  $ FLU  : int  891 867 903 880 926 808 1050 1009 1003 1029 ...
+```
+
+---
+# data.frame: ejercicio 4.2
+* Resumen de los datos: un primer vistazo numérico
+
+```r
+&gt; summary(lect)
+```
+
+```
+##   curso         edad                   dx           CF              PH        
+##  2   : 6   Min.   : 85.00   sin_dislexia:15   Min.   :45.00   Min.   : 24.10  
+##  3   : 7   1st Qu.: 98.75   con_dislexia:15   1st Qu.:53.25   1st Qu.: 57.58  
+##  4   : 6   Median :112.50                     Median :65.00   Median : 75.55  
+##  5   :11   Mean   :110.23                     Mean   :62.73   Mean   : 74.14  
+##  6   : 0   3rd Qu.:122.75                     3rd Qu.:69.75   3rd Qu.: 94.95  
+##  1ESO: 0   Max.   :133.00                     Max.   :75.00   Max.   :112.60  
+##        VN              FLU      
+##  Min.   : 711.8   Min.   : 808  
+##  1st Qu.: 934.5   1st Qu.:1002  
+##  Median :1162.5   Median :1073  
+##  Mean   :1109.2   Mean   :1079  
+##  3rd Qu.:1364.5   3rd Qu.:1206  
+##  Max.   :1398.3   Max.   :1269
+```
+
+---
+# data.frame: ejercicio 4.3
+* Selecciona todos los datos de los estudiantes de cuarto curso
+
+```r
+&gt; lect[lect$curso == 4,]
+```
+
+```
+##    curso edad           dx CF   PH     VN  FLU
+## 14     4  107 sin_dislexia 72 67.7 1134.0 1064
+## 15     4  118 sin_dislexia 69 79.8 1184.0 1181
+## 16     4  119 sin_dislexia 75 77.9 1203.0 1211
+## 17     4  107 sin_dislexia 67 86.6 1143.0 1070
+## 18     4  120 con_dislexia 70 72.2 1190.0 1106
+## 19     4  118 con_dislexia 72 84.7 1182.1 1076
+```
+
+```r
+&gt; subset(lect, curso==4, select=-1)   # quitamos la columna 'curso'
+```
+
+```
+##    edad           dx CF   PH     VN  FLU
+## 14  107 sin_dislexia 72 67.7 1134.0 1064
+## 15  118 sin_dislexia 69 79.8 1184.0 1181
+## 16  119 sin_dislexia 75 77.9 1203.0 1211
+## 17  107 sin_dislexia 67 86.6 1143.0 1070
+## 18  120 con_dislexia 70 72.2 1190.0 1106
+## 19  118 con_dislexia 72 84.7 1182.1 1076
+```
+
+---
+# data.frame: ejercicio 4.4
+* Media de FLU de los alumnos de tercer curso
+
+```r
+&gt; mean(lect$FLU[lect$curso == 3])
+```
+
+```
+## [1] 996.8571
+```
+
+---
+# data.frame: ejercicio 4.5
+* FLU de los alumnos dislexicos de segundo y tercer curso
+
+```r
+&gt; lect$curso &lt;= 3 &amp; lect$dx == 1
+```
+
+```
+##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [25] FALSE FALSE FALSE FALSE FALSE FALSE
+```
+
+```r
+&gt; lect$FLU[lect$curso &lt;= 3 &amp; lect$dx == 1]      # no funciona
+```
+
+```
+## integer(0)
+```
+
+```r
+&gt; lect$FLU[lect$curso &lt;= 3 &amp; lect$dx == 'con_dislexia']
+```
+
+```
+## [1]  880  926  808 1029 1001  857 1029
+```
+
+```r
+&gt; lect[lect$curso &lt;= 3 &amp; lect$dx == 'con_dislexia',]
+```
+
+```
+##    curso edad           dx CF   PH     VN  FLU
+## 4      2   90 con_dislexia 71 29.5 752.50  880
+## 5      2   96 con_dislexia 68 47.8 777.20  926
+## 6      2   85 con_dislexia 69 24.1 711.75  808
+## 10     3  106 con_dislexia 51 46.2 960.70 1029
+## 11     3  102 con_dislexia 54 72.5 960.90 1001
+## 12     3   95 con_dislexia 68 57.1 931.25  857
+## 13     3  103 con_dislexia 52 60.3 958.85 1029
+```
+
+
+
+
+---
+# data.frame: ejercicio 5
+&lt;center&gt;
+&lt;img src="img/solar_system3.png" alt="Sistema solar" width="100%" /&gt;
+&lt;/center&gt;
+
+```r
+&gt; nombre &lt;- c("Mercurio","Venus","Tierra","Marte","Júpiter","Saturno","Urano","Neptuno")
+&gt; tipo &lt;- c("rocoso","rocoso","rocoso","rocoso","gaseoso","gaseoso","gaseoso","gaseoso")
+&gt; diametro &lt;- c(0.382, 0.949, 1, 0.532, 11.209, 9.449, 4.007, 3.883)
+&gt; rotacion &lt;- c(58.64, -243.02, 1, 1.03, 0.41, 0.43, -0.72, 0.67)
+&gt; anillos &lt;- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)
+&gt; # Crear el data frame:
+&gt; planetas &lt;- data.frame(nombre, tipo, diametro, rotacion, anillos)
+```
+
+
+---
+# data.frame: ejercicio 5
+
+```r
+# Ver la estructura del data.frame
+str(...)
+# Selecciona todos los datos de los últimos tres planetas
+planetas_lejos &lt;- ...
+# Selecciona todos los datos de los planetas más pequeños que la Tierra
+planetas_pq &lt;- ...
+```
+
+
+```r
+&gt; # Diámetro medio de los últimos tres planetas
+&gt; mean(planetas_lejos$... )
+&gt; # Selecciona todos los datos de los planetas con anillos
+&gt; planetas[planetas$...==... ,]
+&gt; subset(planetas, ... = ... )
+&gt; # Ordena los planetas según su diámetro (de mayor a menor)
+&gt; posiciones &lt;- order(...., decreasing = TRUE)
+&gt; planetas_orden &lt;- planetas[...]  
+```
+
+
+---
+# data.frame: ejercicio 5
+
+```r
+&gt; # Ver la estructura del data.frame
+&gt; str(planetas)
+```
+
+```
+## 'data.frame':	8 obs. of  5 variables:
+##  $ nombre  : Factor w/ 8 levels "Júpiter","Marte",..: 3 8 6 2 1 5 7 4
+##  $ tipo    : Factor w/ 2 levels "gaseoso","rocoso": 2 2 2 2 1 1 1 1
+##  $ diametro: num  0.382 0.949 1 0.532 11.209 ...
+##  $ rotacion: num  58.64 -243.02 1 1.03 0.41 ...
+##  $ anillos : logi  FALSE FALSE FALSE FALSE TRUE TRUE ...
+```
+
+```r
+&gt; # Selecciona todos los datos de los últimos tres planetas
+&gt; planetas_lejos &lt;- planetas[6:8,]
+&gt; # Selecciona todos los datos de los planetas más pequeños que la Tierra
+&gt; planetas_pq &lt;- planetas[planetas$diametro &lt; 1,]
+&gt; # Diámetro medio los últimos tres planetas
+&gt; mean(planetas_lejos$diametro)
+```
+
+```
+## [1] 5.779667
+```
+
+---
+# data.frame: ejercicio 5
+
+```r
+&gt; # Selecciona todos los datos de los planetas con anillos
+&gt; planetas[planetas$an==T,]
+```
+
+```
+##    nombre    tipo diametro rotacion anillos
+## 5 Júpiter gaseoso   11.209     0.41    TRUE
+## 6 Saturno gaseoso    9.449     0.43    TRUE
+## 7   Urano gaseoso    4.007    -0.72    TRUE
+## 8 Neptuno gaseoso    3.883     0.67    TRUE
+```
+
+```r
+&gt; subset(planetas, anillos==T, select=-5)
+```
+
+```
+##    nombre    tipo diametro rotacion
+## 5 Júpiter gaseoso   11.209     0.41
+## 6 Saturno gaseoso    9.449     0.43
+## 7   Urano gaseoso    4.007    -0.72
+## 8 Neptuno gaseoso    3.883     0.67
+```
+
+---
+# data.frame: ejercicio 5
+
+```r
+&gt; # Ordena los planetas según su diámetro (de mayor a menor)
+&gt; posiciones &lt;- order(planetas$d, decreasing = TRUE)
+&gt; planetas[posiciones,]  
+```
+
+```
+##     nombre    tipo diametro rotacion anillos
+## 5  Júpiter gaseoso   11.209     0.41    TRUE
+## 6  Saturno gaseoso    9.449     0.43    TRUE
+## 7    Urano gaseoso    4.007    -0.72    TRUE
+## 8  Neptuno gaseoso    3.883     0.67    TRUE
+## 3   Tierra  rocoso    1.000     1.00   FALSE
+## 2    Venus  rocoso    0.949  -243.02   FALSE
+## 4    Marte  rocoso    0.532     1.03   FALSE
+## 1 Mercurio  rocoso    0.382    58.64   FALSE
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
