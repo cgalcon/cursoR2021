@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Iniciación a R y RStudio :  Desde los conceptos básicos al tratamiento de datos y gráficos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Carlos González Alcón" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rutgers-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/custom_css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Iniciación a <em>R</em> y <em>RStudio</em> : <br/>Desde los conceptos básicos al tratamiento de datos y gráficos
+## Bloque II:<br/>Estructuras de datos y operaciones. Funciones y métodos de R.
+### Carlos González Alcón
+### Departamento de Matemáticas, Estadística e IO – Universidad de La Laguna
+### 5 feb 2021. v 3feb
+
+---
+
+
+
+
+
+
+# Contenidos
+
+.small[
+* Estructuras de datos: introducción
+* Vectores
+  + Generación
+  + Aritmética vectorial
+  + Funciones y vectores
+  + Tipos
+  + Subvectores e índices
+  + Modificación de vectores, nombres
+* Matrices
+  + Submatrices
+  + Generación a partir de vectores
+  + Arrays
+* Factores
+* Listas
+* Tablas de datos: data.frame
+  + Data.frame vs List
+* Funciones y métodos en R: ejemplo con modelos lineales
+]
+
+---
+
+# Estructuras de datos: introducción
+
+* En R hay muchos tipos de datos. Los más básicos son:  
+    * Números enteros como 4, llamados `integer` (entero).
+    * Decimales como 4.5, llamados `numeric` (numérico).
+    * Valores Booleanos (`TRUE` para Verdadero o `FALSE` para Falso), llamados `logical` (lógico).
+    * Texto o alfanumérico (cadenas de caracteres), llamados `character` (carácter).
+
+
+```r
+&gt; # Declarando las variables de diferentes tipos
+&gt; varA &lt;- 40
+&gt; varB &lt;- "cuarenta"
+&gt; varC &lt;- FALSE 
+&gt; class(varB)  # para saber el tipo de una variable
+```
+
+```
+## [1] "character"
+```
+
+* En las variables de texto es importante especificar las comillas (`" "` o bien `' '`)
+
+```r
+&gt; varD &lt;- cuarenta    # ¿Qué ocurre?
+```
+
+
+---
+# Estructuras de datos: introducción
+* Con los 'ladrillos' anteriores se pueden formar estructuras más complejas
+* Estas son algunas de las estructuras básicas de datos en R: 
+
+&lt;center&gt;
+&lt;img src="img/dataStructuresNew.png" alt="Estructuras de datos"/&gt;
+&lt;/center&gt;
+
+
+---
+# Vectores
+Los vectores son estructuras tipo lista en las que *todos* sus elementos son *del mismo tipo*:
+números enteros, reales, variables lógicas, cadenas de caracteres
+
+La forma más básica de construirlos es con el operador de concatenación,   `c()`
+
+```r
+&gt; x &lt;- c(1,7,3, 4); x   # separados por comas, espacios indiferentes
+```
+
+```
+## [1] 1 7 3 4
+```
+Sus elementos pueden ser otros vectores pero se 'alisan' para devolver un único vector
+
+```r
+&gt; y &lt;- c(x, 0, x); y
+```
+
+```
+## [1] 1 7 3 4 0 1 7 3 4
+```
+
+
+---
+# Vectores: generación con : (seq)
+
+```r
+&gt; 3:9     # enteros
+```
+
+```
+## [1] 3 4 5 6 7 8 9
+```
+
+```r
+&gt; 3.4:9   # decimales
+```
+
+```
+## [1] 3.4 4.4 5.4 6.4 7.4 8.4
+```
+
+```r
+&gt; 9:-3.4  # el primero mayor que el segundo
+```
+
+```
+##  [1]  9  8  7  6  5  4  3  2  1  0 -1 -2 -3
+```
+
+
+---
+#Help! y funciones: un pequeño paréntesis
+En *RStudio* podemos acudir a la pestaña de Help y escribir el nombre del comando.
+
+Para pedir ayuda en la *consola* sobre la sintaxis del comando `seq`
+
+```r
+&gt; help(seq)
+&gt; ?seq
+```
+```
+seq(...)
+
+## Default S3 method:
+seq(from = 1, to = 1, by = ((to - from)/(length.out - 1)),
+    length.out = NULL, along.with = NULL, ...)
+
+seq.int(from, to, by, length.out, along.with, ...)
+
+seq_along(along.with)
+seq_len(length.out)
+```
+
+---
+# Argumentos de las funciones  
+```
+Typical usages are
+
+seq(from, to)
+seq(from, to, by= )
+seq(from, to, length.out= )
+seq(along.with= )
+seq(from)
+seq(length.out= )
+```
+
+* *Argumentos seguidos de =* hay que escribir el nombre
+
+* *Argumentos sin =* si no se escribe el nombre hay que ponerlos en el mismo orden que
+ aparece en la ayuda
+ 
+* Basta con escribir suficiente del nombre del argumento para que no haya ambigüedad
+
+---
+# Vectores: generación con seq
+Serían expresiones equivalentes
+
+```r
+&gt; seq(from=7, to=-6, by=-2.5)
+```
+
+```
+## [1]  7.0  4.5  2.0 -0.5 -3.0 -5.5
+```
+
+```r
+&gt; seq(7,-6,by=-2.5)
+```
+
+```
+## [1]  7.0  4.5  2.0 -0.5 -3.0 -5.5
+```
+
+```r
+&gt; seq(to=-6, by=-2.5, fr=7)
+```
+
+```
+## [1]  7.0  4.5  2.0 -0.5 -3.0 -5.5
+```
+El operador `:` es una forma breve de invocar `seq`
+
+`a:b` es equivalente a `seq(from=a, to=b, by=1)` si a &lt; b  
+y a `seq(from=a, to=b, by=-1)` si b &lt; a
+
+
+---
+# Vectores: generación con rep
+
+```r
+&gt; rep(0:4, 12)
+```
+
+```
+##  [1] 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2
+## [39] 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4
+```
+
+```r
+&gt; rep(0:4, each=6)
+```
+
+```
+##  [1] 0 0 0 0 0 0 1 1 1 1 1 1 2 2 2 2 2 2 3 3 3 3 3 3 4 4 4 4 4 4
+```
+
+```r
+&gt; rep(LETTERS[1:5], times=c(1,1,1,3,9))
+```
+
+```
+##  [1] "A" "B" "C" "D" "D" "D" "E" "E" "E" "E" "E" "E" "E" "E" "E"
+```
+
+
+---
+# Vectores: operaciones
+
+## Aritmética vectorial  
+Entender cómo opera *R* con los vectores nos puede permitir hacer
+transformaciones complicadas en una sola línea de código y evitar el
+uso de bucles en la programación.  
+Las operaciones con vectores se realizan *elemento a elemento*
+
+```r
+&gt; w &lt;- 0:3; z &lt;- c(0,1,1,0)
+&gt; z + w    # + - * / ^
+```
+
+```
+## [1] 0 2 3 3
+```
+
+```r
+&gt; w/z      # (0,1,2,3)/(0,1,0,1)  NaN: Not a Number, Inf: infinito
+```
+
+```
+## [1] NaN   1   2 Inf
+```
+
+```r
+&gt; w^2      # probar 2^w
+```
+
+```
+## [1] 0 1 4 9
+```
+
+
+---
+# Vectores: operaciones  
+Las operaciones con vectores se realizan *elemento a elemento* pero...  
+si se utilizan vectores de distinta longitud, el más pequeño se *cicla* hasta completar la longitud del mayor
+
+```r
+&gt; 1:4 + c(0,1)
+```
+
+```
+## [1] 1 3 3 5
+```
+
+```r
+&gt; 1:7 * c(0,1)
+```
+
+```
+## Warning in 1:7 * c(0, 1): longitud de objeto mayor no es múltiplo de la longitud
+## de uno menor
+```
+
+```
+## [1] 0 2 0 4 0 6 0
+```
+
+
+---
+# Vectores: funciones sobre vectores
+
+Algunas funciones se aplican a cada elemento del vector para
+devolver otro vector de la misma longitud
+
+```r
+&gt; log(0:4)
+```
+
+```
+## [1]      -Inf 0.0000000 0.6931472 1.0986123 1.3862944
+```
+
+```r
+&gt; exp(log(0:4))
+```
+
+```
+## [1] 0 1 2 3 4
+```
+
+`log`, `exp`, `sqrt` ...  
+`log10`, `log2`, `cosh` ...  
+`abs`, `sign` ...  
+`ceiling`, `floor`, `trunc`, `round` ...  
+`sin`, `asin`, `tan` ...
+
+
+---
+# Vectores: funciones sobre vectores  
+Otras funciones al aplicarse a un vector devuelven un solo valor o un vector de la misma u otra longitud
+
+```r
+&gt; max(0:4)  #min, max, sum, prod,...
+```
+
+```
+## [1] 4
+```
+
+```r
+&gt; length(0:4)  #length, mean, median, var, sd, IQR,...
+```
+
+```
+## [1] 5
+```
+
+```r
+&gt; range(0:4)   #devuelve el vector (min,max)
+```
+
+```
+## [1] 0 4
+```
+
+```r
+&gt; cumsum(0:4)  #cumsum, cumprod, cummax, cummin, diff,...
+```
+
+```
+## [1]  0  1  3  6 10
+```
+
+```r
+&gt; diff(2^(0:4))
+```
+
+```
+## [1] 1 2 4 8
+```
+
+
+---
+# Ejercicios 1
+
+1. Crea el vector `z` con los 100 primeros múltiplos de 7.
+
+2. Los 8 capítulos de un libro comienzan en las páginas 3, 34, 41, 73, 82, 101, 132, 150 y el octavo acaba en la 193. Calcula los porcentajes del libro leídos cuando se termina cada capítulo.  
+`pag &lt;- c(3, 34, 41, 73, 82, 101, 132, 150, 193+1)`
+
+3. Crea un vector de 100 elementos en el que las posiciones impares las ocupen los impares en orden creciente y las pares sean ceros: (1, 0, 3, 0, 5,..., 99, 0).
+
+[Ir a las soluciones](soluciones.html)  
+
+
+---
+#Vectores: tipos    
+Los vectores son estructuras tipo lista en las que *todos* sus
+elementos son *del mismo tipo*: números enteros, reales, variables
+lógicas, cadenas de caracteres
+
+```r
+&gt; w &lt;- 8:5   #vector de enteros
+&gt; class(w)
+```
+
+```
+## [1] "integer"
+```
+
+Cuando se mezclan tipos, convierte todos al mismo (coerción)
+
+```r
+&gt; ww &lt;- c(w, 4.5); ww  #convierte todos a reales
+```
+
+```
+## [1] 8.0 7.0 6.0 5.0 4.5
+```
+
+```r
+&gt; class(ww)
+```
+
+```
+## [1] "numeric"
+```
+
+
+---
+#Vectores: tipo carácter (character)  
+
+```r
+&gt; v &lt;- c(w, 3.1415, "cuatro", 'tres'); v  #vector de cadenas caracteres
+```
+
+```
+## [1] "8"      "7"      "6"      "5"      "3.1415" "cuatro" "tres"
+```
+
+```r
+&gt; class(v)
+```
+
+```
+## [1] "character"
+```
+
+```r
+&gt; vv &lt;- c(ww, "cuatro", 'tres'); vv       #otro vector de cadenas caracteres
+```
+
+```
+## [1] "8"      "7"      "6"      "5"      "4.5"    "cuatro" "tres"
+```
+
+```r
+&gt; as.character(8.4:-2)  #para convertir números en cadenas
+```
+
+```
+##  [1] "8.4"  "7.4"  "6.4"  "5.4"  "4.4"  "3.4"  "2.4"  "1.4"  "0.4"  "-0.6"
+## [11] "-1.6"
+```
+
+
+---
+#Vectores: tipo lógico (logical)  
+Sus elementos son `TRUE` o `FALSE`  
+Aparecen al utilizar condiciones (operadores lógicos)  
+```
+&gt;     &gt;=     &lt;     &lt;=     ==      !=  
+&amp; (conjunción: y)    | (disyunción: o)     ! (negación: no)
+```
+
+```r
+&gt; w &lt;- 0:4; w == 3
+```
+
+```
+## [1] FALSE FALSE FALSE  TRUE FALSE
+```
+
+```r
+&gt; print(w &lt; 3); print(2*w != 2); print((w &lt; 3) &amp; (2*w != 2))
+```
+
+```
+## [1]  TRUE  TRUE  TRUE FALSE FALSE
+```
+
+```
+## [1]  TRUE FALSE  TRUE  TRUE  TRUE
+```
+
+```
+## [1]  TRUE FALSE  TRUE FALSE FALSE
+```
+
+
+---
+#Vectores: tipo lógico  
+**TRUE** y **FALSE** pueden convertirse en 1 y 0  
+
+```r
+&gt; c(w &lt; 3, 7)     # cuando se unen a otro vector numérico
+```
+
+```
+## [1] 1 1 1 0 0 7
+```
+
+```r
+&gt; sum(w &gt;= 3)     # cuando se aplican funciones numéricas 
+```
+
+```
+## [1] 2
+```
+Resulta muy útil para contar cuántos elementos verifican una condición determinada.
+
+
+---
+#Subvectores: índices  
+Para seleccionar partes de un vector  
+`vector[vector_de_índices]`
+
+
+```r
+&gt; pot &lt;- 2^(0:10); pot
+```
+
+```
+##  [1]    1    2    4    8   16   32   64  128  256  512 1024
+```
+donde el vector de índices puede ser un vector de naturales positivos
+
+```r
+&gt; pot[3] # el tercer elemento
+```
+
+```
+## [1] 4
+```
+
+```r
+&gt; pot[3:6] # del tercer al sexto elemento
+```
+
+```
+## [1]  4  8 16 32
+```
+
+
+---
+#Subvectores: índices (cont.)
+
+```r
+&gt; pot[c(3,6)] # el tercer y el sexto elemento
+```
+
+```
+## [1]  4 32
+```
+
+```r
+&gt; 2*1:5   # 2*(1:5)
+```
+
+```
+## [1]  2  4  6  8 10
+```
+
+```r
+&gt; pot[2*1:5] # los que ocupan puestos pares
+```
+
+```
+## [1]   2   8  32 128 512
+```
+
+
+---
+#Subvectores: índices (cont.)  
+... o un vector de naturales negativos
+
+```r
+&gt; pot[-(4:8)]   # todos menos del 4° al 8°
+```
+
+```
+## [1]    1    2    4  256  512 1024
+```
+
+```r
+&gt; pot[c(-4,-8)] # todos menos el 4° y el 8°
+```
+
+```
+## [1]    1    2    4   16   32   64  256  512 1024
+```
+
+```r
+&gt; pot[-c(4,8)]  # todos menos el 4° y el 8°
+```
+
+```
+## [1]    1    2    4   16   32   64  256  512 1024
+```
+
+
+---
+#Subvectores: índices (cont.)
+... o un vector lógico...
+
+```r
+&gt; pot &lt;- 2^(0:10); vueltas &lt;- pot%/%360; vueltas
+```
+
+```
+##  [1] 0 0 0 0 0 0 0 0 0 1 2
+```
+
+```r
+&gt; pot[pot &gt; 300]
+```
+
+```
+## [1]  512 1024
+```
+
+```r
+&gt; pot[vueltas &lt; 1]
+```
+
+```
+## [1]   1   2   4   8  16  32  64 128 256
+```
+...que si es más pequeño que el vector, se recicla:
+
+```r
+&gt; pot[c(F,T)]   #los que ocupan puestos pares
+```
+
+```
+## [1]   2   8  32 128 512
+```
+
+
+---
+#Subvectores: índices (cont.)  
+¿Qué ocurre si se repite un elemento?
+
+```r
+&gt; pot &lt;- 2^(0:10); pot
+```
+
+```
+##  [1]    1    2    4    8   16   32   64  128  256  512 1024
+```
+
+```r
+&gt; pot[c(3,3,5,3)]
+```
+
+```
+## [1]  4  4 16  4
+```
+
+* Ejemplo: recodificación de una variable
+
+```r
+&gt; sexo &lt;- c(1,1,2,1,1,2,2) #vble cualitativa, 1:mujer 2:varón
+&gt; c('mujer','varón')[sexo]
+```
+
+```
+## [1] "mujer" "mujer" "varón" "mujer" "mujer" "varón" "varón"
+```
+
+---
+#Vectores: modificación   
+Asignaciones sobre un subvector modifican solo el subvector
+
+```r
+&gt; dig &lt;- 0:9
+&gt; dig[3] &lt;- 66; dig
+```
+
+```
+##  [1]  0  1 66  3  4  5  6  7  8  9
+```
+
+```r
+&gt; dig[3:5] &lt;- -1; dig
+```
+
+```
+##  [1]  0  1 -1 -1 -1  5  6  7  8  9
+```
+
+```r
+&gt; dig[1:6] &lt;- c(-1,77); dig  #reciclando...
+```
+
+```
+##  [1] -1 77 -1 77 -1 77  6  7  8  9
+```
+
+
+---
+#Vectores: modificación   
+Asignaciones a elementos que no existen, alargan el vector lo necesario.
+Los elementos a los que no se hace referencia aparecen como `NA` (Not
+Available, valor faltante)
+
+```r
+&gt; dig &lt;- 0:9
+&gt; dig[15] &lt;- 33
+&gt; dig
+```
+
+```
+##  [1]  0  1  2  3  4  5  6  7  8  9 NA NA NA NA 33
+```
+
+
+---
+#Vectores: poner nombres a sus elementos   
+En vez de los índices 1, 2,... se pueden poner nombres o etiquetas a cada una de
+las componentes de un vector con `names()` asignándole un vector tipo carácter
+
+```r
+&gt; dig &lt;- 0:9; dig
+```
+
+```
+##  [1] 0 1 2 3 4 5 6 7 8 9
+```
+
+```r
+&gt; names(dig)
+```
+
+```
+## NULL
+```
+
+```r
+&gt; names(dig) &lt;- letters[1:10]; dig
+```
+
+```
+## a b c d e f g h i j 
+## 0 1 2 3 4 5 6 7 8 9
+```
+
+```r
+&gt; dig['e']
+```
+
+```
+## e 
+## 4
+```
+
+
+
+---
+# Ejercicios 2 
+Con `rnorm(n)` generamos una muestra aleatoria de *n*
+normales N(0,1). Crea un objeto llamado `x` que sea un
+vector de longitud 10, de normales N(0,1).  
+
+1. A partir de `x`, crea un vector llamado `x.pos` con las
+componentes que sean positivas. Cuenta las que son mayores de 0.3.  
+2. Crea un vector llamado `y` que a las componentes de `x`
+menores que -0.5 les cambie el signo.  
+3. Crea un vector llamado `signo` que valga 'p' para las
+componentes en las que `x` es positivo y 'n' para
+aquellas en las que `x` es negativo.
+
+[Ir a las soluciones](soluciones.html#segundo)
+
+
+---
+# Matrices
+Estructuras tipo vector (todos sus elementos son del mismo tipo) pero de dos dimensiones. Las creamos con `matrix()`
+
+```r
+&gt;  m &lt;- matrix(0:14, nrow=3, ncol=5, byrow=FALSE); m
+```
+
+```
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    0    3    6    9   12
+## [2,]    1    4    7   10   13
+## [3,]    2    5    8   11   14
+```
+
+```r
+&gt; dim(m)   #muestra las dimensiones (fil,col)
+```
+
+```
+## [1] 3 5
+```
+
+
+---
+# Matrices: submatrices  
+`matriz[filas,columnas]`
+
+```r
+&gt; m[2,4]   
+```
+
+```
+## [1] 10
+```
+
+```r
+&gt; m[2,]    # fila 2 entera
+```
+
+```
+## [1]  1  4  7 10 13
+```
+
+```r
+&gt; m[,4]    # columna 4 entera
+```
+
+```
+## [1]  9 10 11
+```
+
+```r
+&gt; m[-2,c(3,3,4)]
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    6    6    9
+## [2,]    8    8   11
+```
+
+
+---
+# Matrices: generación a partir de vectores
+
+* Construimos matrices a partir de vectores con `cbind()` y `rbind()`  que toman
+sus vectores argumentos como columnas o como filas de la matriz resultado:
+
+
+```r
+&gt; x &lt;- 1:3
+&gt; y &lt;- 5:7
+&gt; m1 &lt;- cbind(x,y); m1
+```
+
+```
+##      x y
+## [1,] 1 5
+## [2,] 2 6
+## [3,] 3 7
+```
+
+```r
+&gt; m2 &lt;- rbind(x,y); m2
+```
+
+```
+##   [,1] [,2] [,3]
+## x    1    2    3
+## y    5    6    7
+```
+
+
+---
+# Matrices: generación a partir de vectores
+
+* De nuevo, cuidado si los vectores no tienen la misma longitud
+
+```r
+&gt; x &lt;- 1:5
+&gt; y &lt;- 11:12
+&gt; rbind(x,y)
+```
+
+```
+## Warning in rbind(x, y): number of columns of result is not a multiple of vector
+## length (arg 2)
+```
+
+```
+##   [,1] [,2] [,3] [,4] [,5]
+## x    1    2    3    4    5
+## y   11   12   11   12   11
+```
+
+* ¿Cómo se realiza la multiplicación de matrices? Buscar en la ayuda "matrix multiplication" y realizar el producto de las matrices m1 y m2.
+
+```r
+&gt; m1 %*% m2
+```
+
+
+---
+# Matrices: ejercicio 3.1 (día 1)
+
+*Producción de fruta en Canarias.*
+Guardemos en una matriz la producción de nísperos, aguacates y kiwis entre 2014 y 2019. (Fuente: [ISTAC](http://www.gobiernodecanarias.org/istac/estadisticas/sectorprimario/))
+
+fruta   |2019      |	2018  |	2017   |	2016 |	2015 |2014 
+--------|------------------------------------------------- 
+Níspero | 	205,6  |212,9  |199,8   |197,4  |196,0 	 |196,0 
+Aguacate|11.959,1  |8.879,8|11.001,1|9.427,2|10.328,0|9.808,0 
+Kiwi 	  |  57,5 	 |55,3 	 |52,3    |48,0 	|46,0 	 |45,0 
+
+* Crear una matriz `frutas` cuyas columnas sean toneladas producidas de estas frutas
+para cada año de 2014 a 2019. ¡Atento al punto decimal!
+
+
+```r
+&gt; nispe &lt;- c(205.6, 212.9, 199.8, 197.4, 196.0, 196.0)
+&gt; aguac &lt;- c(11959.1, 8879.8, 11001.1, 9427.2, 10328.0, 9808.0)
+&gt; kiwis &lt;- c(57.5, 55.3, 52.3, 48.0, 46.0, 45.0)
+```
+
+
+```r
+&gt; # se puede dar nombre a columnas y filas con colnames() y rownames()
+&gt; frutas &lt;- rbind(... , ... , ...)   
+&gt; colnames(frutas) &lt;- c(  )
+&gt; rownames(frutas) &lt;- c(  )
+```
+
+
+---
+# Matrices: ejercicio 3.2
+
+* Si el precio medio del kilo de níspero es 1.5€, el del aguacate es 1.2€ y el del
+kiwi es 1.3€, ¿a cuánto asciende el valor de la producción de cada año?
+
+```r
+&gt; precio &lt;- c(1.5, 1.2, 1.3)
+```
+
+
+
+
+---
+# Matrices: ejercicio 3.3
+
+* ¿Qué producciones superan las 200 toneladas? ¿Cuánto suman?
+
+
+* ¿Qué frutas y qué años superan las 200 toneladas?
+
+
+
+
+
+
+---
+# Arrays  
+Estructuras matriciales con más de dos dimensiones. Se crean con `array()`
+
+```r
+&gt;  arr &lt;- array(1:24, dim=c(3,4,2)); arr
+```
+
+```
+## , , 1
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   10
+## [2,]    2    5    8   11
+## [3,]    3    6    9   12
+## 
+## , , 2
+## 
+##      [,1] [,2] [,3] [,4]
+## [1,]   13   16   19   22
+## [2,]   14   17   20   23
+## [3,]   15   18   21   24
+```
+
+
+---
+# Arrays  
+Podemos dar nombres a los índices de cada una de las dimensiones con `dimnames()`
+
+```r
+&gt; dimnames(arr) &lt;- list(letters[1:3], LETTERS[1:4], c('uno','dos')); arr
+```
+
+```
+## , , uno
+## 
+##   A B C  D
+## a 1 4 7 10
+## b 2 5 8 11
+## c 3 6 9 12
+## 
+## , , dos
+## 
+##    A  B  C  D
+## a 13 16 19 22
+## b 14 17 20 23
+## c 15 18 21 24
+```
+
+---
+# Arrays  
+
+```r
+&gt; arr['c',,'uno']
+```
+
+```
+##  A  B  C  D 
+##  3  6  9 12
+```
+
+```r
+&gt; arr[,'B','uno']
+```
+
+```
+## a b c 
+## 4 5 6
+```
+
+```r
+&gt; arr[,,'dos']
+```
+
+```
+##    A  B  C  D
+## a 13 16 19 22
+## b 14 17 20 23
+## c 15 18 21 24
+```
+
+
+
+
+---
+# Factores  
+Similar al vector, sirve para almacenar *datos categóricos*: datos que deben pertenecer a una
+serie de niveles establecidos.  
+
+```r
+&gt; v &lt;- c(1,3,7,3,6,3,7); v   # un vector corriente
+```
+
+```
+## [1] 1 3 7 3 6 3 7
+```
+
+```r
+&gt; mean(v)   # calculamos su media
+```
+
+```
+## [1] 4.285714
+```
+
+```r
+&gt; fv &lt;- as.factor(v); fv   # o bien fv &lt;- factor(v)
+```
+
+```
+## [1] 1 3 7 3 6 3 7
+## Levels: 1 3 6 7
+```
+
+
+---
+# Factores
+
+```r
+&gt; is.factor(fv)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+&gt; mean(fv)  # intentamos calcular su media
+```
+
+```
+## Warning in mean.default(fv): argument is not numeric or logical: returning NA
+```
+
+```
+## [1] NA
+```
+
+---
+# Factores
+* Cuando se leen unos datos, conviene convertir en factor aquellas variables
+numéricas que lo precisen. Las que sean tipo carácter no hace falta.
+
+```r
+&gt; lect &lt;- read.table("lectura.csv", header=T, dec=",")
+&gt; lect[1:2,]   #dos variables podrían ser factores 
+```
+
+```
+##   curso edad dx CF   PH  VN FLU
+## 1     2   87  0 60 40.6 732 891
+## 2     2   88  0 52 28.9 742 867
+```
+
+```r
+&gt; lect$curso &lt;- factor(lect$curso)
+&gt; lect$dx &lt;- factor(lect$dx)
+&gt; summary(lect[,1:5])
+```
+
+```
+##  curso       edad        dx           CF              PH        
+##  2: 6   Min.   : 85.00   0:15   Min.   :45.00   Min.   : 24.10  
+##  3: 7   1st Qu.: 98.75   1:15   1st Qu.:53.25   1st Qu.: 57.58  
+##  4: 6   Median :112.50          Median :65.00   Median : 75.55  
+##  5:11   Mean   :110.23          Mean   :62.73   Mean   : 74.14  
+##         3rd Qu.:122.75          3rd Qu.:69.75   3rd Qu.: 94.95  
+##         Max.   :133.00          Max.   :75.00   Max.   :112.60
+```
+
+---
+# factor( ): comando completo
+El comando `factor` puede utilizarse con más argumentos  
+`factor(x = character(), levels, labels = levels,`  
+          `exclude = NA, ordered = is.ordered(x), nmax = NA)`
+
+```r
+&gt; lect &lt;- read.table("lectura.csv", header=T, dec=",")
+&gt; lect$curso &lt;- factor(lect$curso, levels=2:7, labels=c(2:6,'1ESO'), ordered=T)
+&gt; lect$dx &lt;- factor(lect$dx, levels=c(0,1), labels=c('sin_dislexia', 'con_dislexia'))
+&gt; summary(lect[,1:5])
+```
+
+```
+##   curso         edad                   dx           CF              PH        
+##  2   : 6   Min.   : 85.00   sin_dislexia:15   Min.   :45.00   Min.   : 24.10  
+##  3   : 7   1st Qu.: 98.75   con_dislexia:15   1st Qu.:53.25   1st Qu.: 57.58  
+##  4   : 6   Median :112.50                     Median :65.00   Median : 75.55  
+##  5   :11   Mean   :110.23                     Mean   :62.73   Mean   : 74.14  
+##  6   : 0   3rd Qu.:122.75                     3rd Qu.:69.75   3rd Qu.: 94.95  
+##  1ESO: 0   Max.   :133.00                     Max.   :75.00   Max.   :112.60
+```
+
+---
+# factor( ): comando completo
+
+```r
+&gt; lect$curso
+```
+
+```
+##  [1] 2 2 2 2 2 2 3 3 3 3 3 3 3 4 4 4 4 4 4 5 5 5 5 5 5 5 5 5 5 5
+## Levels: 2 &lt; 3 &lt; 4 &lt; 5 &lt; 6 &lt; 1ESO
+```
+
+```r
+&gt; lect$dx
+```
+
+```
+##  [1] sin_dislexia sin_dislexia sin_dislexia con_dislexia con_dislexia
+##  [6] con_dislexia sin_dislexia sin_dislexia sin_dislexia con_dislexia
+## [11] con_dislexia con_dislexia con_dislexia sin_dislexia sin_dislexia
+## [16] sin_dislexia sin_dislexia con_dislexia con_dislexia sin_dislexia
+## [21] sin_dislexia sin_dislexia con_dislexia con_dislexia con_dislexia
+## [26] con_dislexia sin_dislexia sin_dislexia con_dislexia con_dislexia
+## Levels: sin_dislexia con_dislexia
+```
+
+---
+#Listas  
+Colecciones ordenadas de objetos que pueden ser cada uno de tipos diferentes: números, caracteres, vectores, matrices, otras listas, hojas de datos...   
+Se crean con `list()`:
+
+```r
+&gt; pepe &lt;- list(nombre='José', num.hijos=4, edad.hijos=c(9,7,3,1))
+&gt; length(pepe)
+```
+
+```
+## [1] 3
+```
+
+```r
+&gt; names(pepe)   # nombres de los elementos de la lista
+```
+
+```
+## [1] "nombre"     "num.hijos"  "edad.hijos"
+```
+
+```r
+&gt; pepe[[1]]     # también funciona pepe[1]
+```
+
+```
+## [1] "José"
+```
+
+
+---
+#Listas  
+
+```r
+&gt; pepe$edad.hijos       # bastaría con poner pepe$e
+```
+
+```
+## [1] 9 7 3 1
+```
+
+```r
+&gt; pepe[["num.hijos"]]   # también funciona pepe['num.hijos']
+```
+
+```
+## [1] 4
+```
+
+```r
+&gt; pepe[[3]][2]          # como pepe[[3]] es un vector...
+```
+
+```
+## [1] 7
+```
+Añado elementos a la lista simplemente definiéndolos:
+
+```r
+&gt; pepe[[4]] &lt;- "Dolores"   # pepe$esposa &lt;- 'Dolores' mejor
+```
+
+
+---
+#Listas
+* Muchas de las funciones que se utilizan en *R* devuelven como resultado una lista de elementos.
+
+```r
+&gt; histog &lt;- hist(rnorm(50))
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-52-1.png)&lt;!-- --&gt;
+
+---
+#Listas
+
+```r
+&gt; histog
+```
+
+```
+## $breaks
+##  [1] -2.5 -2.0 -1.5 -1.0 -0.5  0.0  0.5  1.0  1.5  2.0  2.5
+## 
+## $counts
+##  [1] 2 0 5 5 8 8 9 8 3 2
+## 
+## $density
+##  [1] 0.08 0.00 0.20 0.20 0.32 0.32 0.36 0.32 0.12 0.08
+## 
+## $mids
+##  [1] -2.25 -1.75 -1.25 -0.75 -0.25  0.25  0.75  1.25  1.75  2.25
+## 
+## $xname
+## [1] "rnorm(50)"
+## 
+## $equidist
+## [1] TRUE
+## 
+## attr(,"class")
+## [1] "histogram"
+```
+
+---
+#Listas
+
+```r
+&gt; histog$xname &lt;- 'boberías normales'
+&gt; plot(histog)
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-54-1.png)&lt;!-- --&gt;
+
+
+
+
+
+
+
+---
+# Tablas de datos: data.frame
+
+* La estructura `data.frame` es similar a `matrix` pues son rectangulares, solo que ahora las columnas pueden ser de distinto tipo o clase. Sin embargo, todos los elementos de cada columna deben de ser del mismo tipo: cada columna es un `vector`.
+* A las columnas del `data.frame` las llamaremos *variables* y a las filas *observaciones*.
+
+
+```r
+&gt; # Data.frame con 4 variables (observar que las 3 primeras son vectores texto 
+&gt; # y la última es numérica)
+&gt; data.frame(rama="Ciencias",
++            grado=rep(c("Matemáticas","Física","Biología"),each=2),
++            sexo=rep(c("mujeres","hombres"),3),
++            num.alum=c(36,49,24,46,54,46)) -&gt; matricula
+&gt; #Clase, dimension y estructura del data.frame
+&gt; class(...)
+&gt; dim(...)
+&gt; str(...)
+```
+
+---
+# data.frame
+
+
+```r
+&gt; data.frame(rama="Ciencias",
++            grado=rep(c("Matemáticas","Física","Biología"),each=2),
++            sexo=rep(c("mujeres","hombres"),3),   #valdría sexo=c("mujeres","hombres")
++            num.alum=c(36,49,24,46,54,46) ) -&gt; data
+&gt; data
+```
+
+```
+##       rama       grado    sexo num.alum
+## 1 Ciencias Matemáticas mujeres       36
+## 2 Ciencias Matemáticas hombres       49
+## 3 Ciencias      Física mujeres       24
+## 4 Ciencias      Física hombres       46
+## 5 Ciencias    Biología mujeres       54
+## 6 Ciencias    Biología hombres       46
+```
+
+```r
+&gt; dim(data)   #observaciones (filas) y variables (columnas)
+```
+
+```
+## [1] 6 4
+```
+
+
+---
+# data.frame
+* Las variables que contienen cadenas de caracteres son consideradas directamente como factores
+
+```r
+&gt; #Clase y estructura del data.frame
+&gt; class(data)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+&gt; str(data)
+```
+
+```
+## 'data.frame':	6 obs. of  4 variables:
+##  $ rama    : Factor w/ 1 level "Ciencias": 1 1 1 1 1 1
+##  $ grado   : Factor w/ 3 levels "Biología","Física",..: 3 3 2 2 1 1
+##  $ sexo    : Factor w/ 2 levels "hombres","mujeres": 2 1 2 1 2 1
+##  $ num.alum: num  36 49 24 46 54 46
+```
+
+
+---
+# data.frame
+* Las referencias son como las de las matrices y como las de las listas, con las columnas (variables) como sus elementos
+&lt;center&gt;
+&lt;img src="img/R_data_frame_v2.png" alt="Data frame"/&gt;
+&lt;/center&gt;
+
+
+---
+# data.frame
+
+* Se produce error cuando se intenta crear un `data.frame` utilizando vectores de
+diferente longitud que no son divisores de la del más largo
+
+```r
+&gt; data.frame(x=1:3, y=1:5)
+```
+
+```
+## Error in data.frame(x = 1:3, y = 1:5): arguments imply differing number of rows: 3, 5
+```
+
+
+
+
+---
+# data.frame: ejercicio 4
+Leemos los datos de lectura en escolares:
+
+```r
+&gt; lect &lt;- read.table("lectura.csv", header=T, dec=",")
+&gt; lect$curso &lt;- factor(lect$curso, levels=2:7, labels=c(2:6,'1ESO'), ordered=T)
+&gt; lect$dx &lt;- factor(lect$dx, levels=c(0,1), labels=c('sin_dislexia', 'con_dislexia'))
+&gt; head(lect[,1:5])
+```
+
+```
+##   curso edad           dx CF   PH
+## 1     2   87 sin_dislexia 60 40.6
+## 2     2   88 sin_dislexia 52 28.9
+## 3     2   88 sin_dislexia 72 54.6
+## 4     2   90 con_dislexia 71 29.5
+## 5     2   96 con_dislexia 68 47.8
+## 6     2   85 con_dislexia 69 24.1
+```
+
+---
+# data.frame: ejercicio 4
+1. Mira la estructura del data.frame `lect`
+2. Resume los datos: un primer vistazo numérico
+3. Selecciona todos los datos de los estudiantes de cuarto curso
+4. Media de FLU de los alumnos de tercer curso
+5. FLU de los alumnos disléxicos de segundo y tercer curso
+
+[Ir a las soluciones](soluciones.html#cuarto)
+
+
+
+
+
+
+
+
+
+
+
+---
+# Modelos lineales  
+Podemos construir un modelo lineal simple con una variable explicativa `var1` y
+una variable respuesta `resp` con ayuda del comando `lm`:  
+`lm(resp ~ var1, dataset)`  
+
+Esto responde a un modelo del tipo  
+      `\(resp = beta0 + beta1 ·var1 + error\)`  
+  
+No es necesario especificar en el modelo (`resp ~ var1`) el término constante (beta0),
+pues lo supone por defecto. Pero si no lo quisiéramos podríamos indicarlo con  
+`lm(resp ~ -1 + var1, dataset)`  
+
+
+```r
+&gt; lect &lt;- read.table("./lectura.csv", header=T, dec=",")
+&gt; lm(FLU ~ edad, lect)
+```
+
+```
+## 
+## Call:
+## lm(formula = FLU ~ edad, data = lect)
+## 
+## Coefficients:
+## (Intercept)         edad  
+##      50.576        9.332
+```
+
+
+---
+# Modelos lineales  
+
+
+```r
+&gt; lm(FLU ~ edad, lect)
+```
+
+```
+## 
+## Call:
+## lm(formula = FLU ~ edad, data = lect)
+## 
+## Coefficients:
+## (Intercept)         edad  
+##      50.576        9.332
+```
+Esto significa que el modelo devuelto es  
+`FLU` =  50.58 + 9.33 * `edad`  
+
+
+---
+# Modelos lineales  
+Aunque el comando `lm` nos muestra solo el modelo empleado y los coeficientes,
+en realidad devuelve muchos más datos
+
+```r
+&gt; lm(FLU ~ edad, lect) -&gt; f4e  #lo guardamos en un objeto
+&gt; names(f4e)                   #y vemos sus componentes (es una lista)
+```
+
+```
+##  [1] "coefficients"  "residuals"     "effects"       "rank"         
+##  [5] "fitted.values" "assign"        "qr"            "df.residual"  
+##  [9] "xlevels"       "call"          "terms"         "model"
+```
+
+```r
+&gt; f4e$coef                     # = f4e$coefficients = f4e[1]
+```
+
+```
+## (Intercept)        edad 
+##   50.575686    9.331941
+```
+
+```r
+&gt; names(f4e$coef)
+```
+
+```
+## [1] "(Intercept)" "edad"
+```
+
+```r
+&gt; class(f4e$coef)
+```
+
+```
+## [1] "numeric"
+```
+
+---
+# Modelos lineales: los datos originales  
+
+```r
+&gt; f4e$model[1:9,]
+```
+
+```
+##    FLU edad
+## 1  891   87
+## 2  867   88
+## 3  903   88
+## 4  880   90
+## 5  926   96
+## 6  808   85
+## 7 1050  106
+## 8 1009  101
+## 9 1003   98
+```
+
+```r
+&gt; lect$FLU[1:9]
+```
+
+```
+## [1]  891  867  903  880  926  808 1050 1009 1003
+```
+
+```r
+&gt; lect$edad[1:9]
+```
+
+```
+## [1]  87  88  88  90  96  85 106 101  98
+```
+
+---
+# Modelos lineales: los datos ajustados al modelo  
+
+```r
+&gt; f4e$fitted.values[1:9]
+```
+
+```
+##         1         2         3         4         5         6         7         8 
+##  862.4546  871.7865  871.7865  890.4504  946.4420  843.7907 1039.7614  993.1017 
+##         9 
+##  965.1059
+```
+
+```r
+&gt; f4e$coef[1] + f4e$co[2]*lect$edad[1:9]
+```
+
+```
+## [1]  862.4546  871.7865  871.7865  890.4504  946.4420  843.7907 1039.7614
+## [8]  993.1017  965.1059
+```
+
+
+---
+# Modelos lineales: abline( )  
+
+```r
+&gt; plot(lect$edad, lect$FLU)   # diagrama de dispersión: un punto por observación
+&gt; abline(f4e, col='green3')
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-66-1.png)&lt;!-- --&gt;
+
+---
+# Modelos lineales: abline( )  
+
+```r
+&gt; lect$dx
+```
+
+```
+##  [1] 0 0 0 1 1 1 0 0 0 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 1 1 0 0 1 1
+```
+
+```r
+&gt; c('blue','red')[lect$dx + 1]
+```
+
+```
+##  [1] "blue" "blue" "blue" "red"  "red"  "red"  "blue" "blue" "blue" "red" 
+## [11] "red"  "red"  "red"  "blue" "blue" "blue" "blue" "red"  "red"  "blue"
+## [21] "blue" "blue" "red"  "red"  "red"  "red"  "blue" "blue" "red"  "red"
+```
+Si hubiéramos convertido la variable en factor
+
+```r
+&gt; lect$fdx &lt;- factor(lect$dx, levels=c(0,1), labels=c('sin_dislexia', 'con_dislexia'))
+&gt; as.numeric(lect$fdx)
+```
+
+```
+##  [1] 1 1 1 2 2 2 1 1 1 2 2 2 2 1 1 1 1 2 2 1 1 1 2 2 2 2 1 1 2 2
+```
+
+```r
+&gt; c('blue','red')[as.numeric(lect$fdx)]
+```
+
+```
+##  [1] "blue" "blue" "blue" "red"  "red"  "red"  "blue" "blue" "blue" "red" 
+## [11] "red"  "red"  "red"  "blue" "blue" "blue" "blue" "red"  "red"  "blue"
+## [21] "blue" "blue" "red"  "red"  "red"  "red"  "blue" "blue" "red"  "red"
+```
+
+---
+# Modelos lineales: abline( )  
+
+```r
+&gt; plot(lect$edad, lect$FLU, bg=c('blue','red')[lect$dx + 1], pch=21)
+&gt; abline(f4e, col='green3')
+&gt; text(120, 850, col='green3',
++      paste('FLU=',round(f4e$coef[1],2),'+',round(f4e$co[2],2),'*edad'))
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-69-1.png)&lt;!-- --&gt;
+
+
+---
+# Modelos lineales: summary( )  
+
+```r
+&gt; summary(f4e)
+```
+
+```
+## 
+## Call:
+## lm(formula = FLU ~ edad, data = lect)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -80.11 -18.02   5.93  29.08  51.93 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  50.5757    54.8578   0.922    0.364    
+## edad          9.3319     0.4935  18.911   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 38.84 on 28 degrees of freedom
+## Multiple R-squared:  0.9274,	Adjusted R-squared:  0.9248 
+## F-statistic: 357.6 on 1 and 28 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+# Modelos lineales  
+
+El valor de R² nos dice que este modelo nos explica el 93% de la variabilidad de la respuesta.
+
+Los contrastes de hipótesis sobre los coeficientes del modelo nos indican que solo el coeficiente de la variable edad es significativamente distinto de cero, pero no así el término independiente.
+
+El pequeño p-valor del test de la F nos afirma que el modelo explica una cantidad significativa de la variabilidad de la variable de respuesta. Está comparando el poder predictivo de nuestro modelo frente a considerar simplemente la media como predictor.
+
+
+---
+# Modelos lineales: anova( )
+Para ver la tabla del Análisis de la Varianza que muestra los cálculos que hay
+tras el test de la F:
+
+```r
+&gt; anova(f4e)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: FLU
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## edad       1 539350  539350  357.61 &lt; 2.2e-16 ***
+## Residuals 28  42230    1508                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+---
+# Distintos modelos lineales
+Puesto que nos ha dado que el término independiente no es significativamente distinto
+de cero, podríamos considerar un nuevo modelo sin él:  
+
+```r
+&gt; f4e0 &lt;- lm(FLU ~ -1 + edad, lect); summary(f4e0)
+```
+
+```
+## 
+## Call:
+## lm(formula = FLU ~ -1 + edad, data = lect)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -78.404 -12.745   5.668  35.660  46.813 
+## 
+## Coefficients:
+##      Estimate Std. Error t value Pr(&gt;|t|)    
+## edad  9.78308    0.06362   153.8   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 38.74 on 29 degrees of freedom
+## Multiple R-squared:  0.9988,	Adjusted R-squared:  0.9987 
+## F-statistic: 2.365e+04 on 1 and 29 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+# Comparación de modelos
+Y comparar los dos modelos:
+
+```r
+&gt; anova(f4e0, f4e)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: FLU ~ -1 + edad
+## Model 2: FLU ~ edad
+##   Res.Df   RSS Df Sum of Sq    F Pr(&gt;F)
+## 1     29 43512                         
+## 2     28 42230  1    1281.9 0.85 0.3644
+```
+El p-valor grande nos indica que el modelo más complicado (model 2: FLU = a + b·edad,
+con término independiente) no es significativamente mejor que el más sencillo
+(model 1: FLU = b·edad).
+
+---
+
+```r
+&gt; plot(lect$edad, lect$FLU, col=c('blue','red')[lect$dx+1])
+&gt; abline(f4e, col='green3'); text(120,870,'FLU=a+b*edad',col='green3')
+&gt; abline(f4e0, col='orange'); text(120,830,'FLU=b*edad',col='orange')
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-75-1.png)&lt;!-- --&gt;
+
+
+---
+# Modelos lineales: gráficos de diagnóstico con plot( )  
+Para comprobar si se dan las hipótesis del modelo lineal usamos `plot`
+
+```r
+&gt; par(mfrow=c(2,3), mai=c(.75,1,0.25,0)) -&gt; valoresanteriores
+&gt; plot(f4e, which=1:6)
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-76-1.png)&lt;!-- --&gt;
+
+
+
+
+---
+# Variable regresora cualitativa
+Añadamos una nueva variable, ahora será cualitativa (`dx`), que nos explique FLU
+(_análisis de la covarianza_):
+
+```r
+&gt; lect$fdx &lt;- factor(lect$dx, levels=c(0,1), labels=c('sin_dislexia', 'con_dislexia'))
+&gt; f4ed0 &lt;- lm(FLU ~ -1 + edad + fdx, lect); summary(f4ed0)
+```
+
+```
+## 
+## Call:
+## lm(formula = FLU ~ -1 + edad + fdx, data = lect)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -48.363 -16.836   5.058  19.261  47.523 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## edad              9.5144     0.3226  29.493   &lt;2e-16 ***
+## fdxsin_dislexia  59.4359    35.7431   1.663    0.108    
+## fdxcon_dislexia   1.4985    36.5681   0.041    0.968    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 25.28 on 27 degrees of freedom
+## Multiple R-squared:  0.9995,	Adjusted R-squared:  0.9995 
+## F-statistic: 1.852e+04 on 3 and 27 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+```r
+&gt; plot(lect$edad, lect$FLU, pch=21, bg=c('blue','red')[lect$dx+1])
+&gt; text(90,1200,'sin dislexia',col='blue'); text(90,1170,'con dislexia',col='red')
+&gt; abline(a=f4ed0$coef[2], b=f4ed0$coef[1], col='blue') #dx=0
+&gt; abline(a=f4ed0$coef[3], b=f4ed0$coef[1], col='red')  #dx=1
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-79-1.png)&lt;!-- --&gt;
+
+---
+
+```r
+&gt; par(mfrow=c(2,2)) -&gt; valoresanteriores
+&gt; plot(f4ed0)
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-80-1.png)&lt;!-- --&gt;
+
+
+
+---
+
+```r
+&gt; par(mfrow=c(2,2)) -&gt; valoresanteriores
+&gt; hist(f4ed0$residua)                    #histograma de los residuos: ¿normal?
+&gt; plot(f4ed0$res ~ f4ed0$model[,1])      #residuos frente a la respuesta
+&gt; plot(f4ed0$res ~ f4ed0$model[,2])      #residuos frente a edad
+&gt; plot(f4ed0$res ~ factor(f4ed0$model[,3]))  #residuos frente a dx
+```
+
+![](R_cursoCAPACITA_Bloque2_files/figure-html/unnamed-chunk-82-1.png)&lt;!-- --&gt;
+
+
+
+
+
+
+
+---
+class: inverse, mline, center, middle
+
+# Gracias
+
+
+Esta presentación se ha creado con la librería [**xaringan**](https://github.com/yihui/xaringan),&lt;/br&gt;
+utilizando [remark.js](https://remarkjs.com), [**knitr**](http://yihui.org/knitr), y [R Markdown](https://rmarkdown.rstudio.com).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
